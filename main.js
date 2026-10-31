@@ -69,7 +69,13 @@ class GDriveSync extends Plugin {
   // 연결 코드 = 웹 앱 주소#비밀 문자열
   async call(op, args) {
     const [url, key] = this.s.link.split('#');
-    const r = await requestUrl({ url, method: 'POST', contentType: 'text/plain', body: JSON.stringify(Object.assign({ key, op }, args)), throw: false });
+    const body = JSON.stringify(Object.assign({ key, op }, args));
+    let r;
+    // 아이폰은 망 전환 등으로 "네트워크 연결이 유실됨"이 잠깐씩 나서 몇 번 다시 시도한다 (모든 작업이 다시 해도 안전함)
+    for (let i = 1; ; i++) {
+      try { r = await requestUrl({ url, method: 'POST', contentType: 'text/plain', body, throw: false }); break; }
+      catch (e) { if (i >= 3) throw e; await new Promise((ok) => setTimeout(ok, 2000 * i)); }
+    }
     let j;
     try { j = r.json; } catch (e) { throw new Error(`중계 스크립트 응답이 이상해요 (${r.status}). 연결 코드와 배포 설정을 확인해 주세요`); }
     if (!j.ok) throw new Error(j.error);
