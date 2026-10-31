@@ -1,9 +1,9 @@
 {
   "id": "gdrive-folder-sync",
   "name": "구글 드라이브 폴더 동기화",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "minAppVersion": "1.4.0",
-  "description": "볼트를 구글 드라이브의 폴더(공유 폴더 포함)와 양방향 동기화합니다. 아이폰용.",
+  "description": "볼트를 구글 드라이브 폴더(공유 폴더 포함)와 Apps Script 중계로 양방향 동기화합니다. 아이폰용.",
   "author": "zerglingg4",
   "isDesktopOnly": false
 }
